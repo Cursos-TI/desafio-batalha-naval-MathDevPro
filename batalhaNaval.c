@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 
 #define TAMANHO_TABULEIRO 10
@@ -60,6 +59,34 @@ int posicionarNavioVertical(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO],
     return 1;
 }
 
+// Função para posicionar um navio diagonal crescente
+int posicionarNavioDiagonalCrescente(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linha, int coluna) {
+    if (linha + TAMANHO_NAVIO > TAMANHO_TABULEIRO || coluna + TAMANHO_NAVIO > TAMANHO_TABULEIRO) // Verifica se o navio cabe diagonalmente
+        return 0;
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        if (tabuleiro[linha + i][coluna + i] != AGUA) // Verifica se há sobreposição
+            return 0;
+    }
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[linha + i][coluna + i] = NAVIO; // Posiciona o navio
+    }
+    return 1;
+}
+
+// Função para posicionar um navio diagonal decrescente
+int posicionarNavioDiagonalDecrescente(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linha, int coluna) {
+    if (linha + TAMANHO_NAVIO > TAMANHO_TABULEIRO || coluna - TAMANHO_NAVIO < -1) // Verifica se o navio cabe diagonalmente
+        return 0;
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        if (tabuleiro[linha + i][coluna - i] != AGUA) // Verifica se há sobreposição
+            return 0;
+    }
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[linha + i][coluna - i] = NAVIO; // Posiciona o navio
+    }
+    return 1;
+}
+
 int main() {
     int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
 
@@ -73,6 +100,8 @@ int main() {
     // Define as posições dos navios diretamente no código
     int linhaNavio1 = 2, colunaNavio1 = 4; // Navio 1: Horizontal, começa na linha 2, coluna 4
     int linhaNavio2 = 5, colunaNavio2 = 7; // Navio 2: Vertical, começa na linha 5, coluna 7
+    int linhaNavio3 = 0, colunaNavio3 = 0; // Navio 3: Diagonal crescente, começa na linha 0, coluna 0
+    int linhaNavio4 = 0, colunaNavio4 = 9; // Navio 4: Diagonal decrescente, começa na linha 0, coluna 9
 
     // Posiciona o primeiro navio (horizontal)
     if (!posicionarNavioHorizontal(tabuleiro, linhaNavio1, colunaNavio1)) {
@@ -82,6 +111,16 @@ int main() {
     // Posiciona o segundo navio (vertical)
     if (!posicionarNavioVertical(tabuleiro, linhaNavio2, colunaNavio2)) {
         printf("Erro ao posicionar o segundo navio!\n");
+    }
+
+    // Posiciona o terceiro navio (diagonal crescente)
+    if (!posicionarNavioDiagonalCrescente(tabuleiro, linhaNavio3, colunaNavio3)) {
+        printf("Erro ao posicionar o terceiro navio!\n");
+    }
+
+    // Posiciona o quarto navio (diagonal decrescente)
+    if (!posicionarNavioDiagonalDecrescente(tabuleiro, linhaNavio4, colunaNavio4)) {
+        printf("Erro ao posicionar o quarto navio!\n");
     }
 
     // Exibe o tabuleiro após posicionar os navios
